@@ -1,0 +1,37 @@
+version: '3.5'
+
+services:
+  api_crud:
+    image: yoangelcruz/icec-crud:0.1
+    ports:
+      - "3000:3000"
+    networks:
+      - mynetwork
+    restart: unless-stopped
+
+  api_auth:
+    image: yoangelcruz/icec-auth:0.2
+    ports:
+      - "3001:3001"
+    networks:
+      - mynetwork
+    restart: unless-stopped
+
+  proxy_nginx:
+      build:
+        context: ./nginx
+        dockerfile: Dockerfile
+      ports:
+        - 443:443
+      networks:
+        - mynetwork
+      volumes:
+        - ./nginx/conf.d/:/etc/nginx/conf.d/
+  
+networks:
+  mynetwork:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/16
