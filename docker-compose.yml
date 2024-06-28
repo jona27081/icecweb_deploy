@@ -17,6 +17,14 @@ services:
       - mynetwork
     restart: unless-stopped
 
+  icec_front:
+    image: yoangelcruz/icec-web:0.1
+    ports:
+      - "8081:80"
+    networks:
+      - mynetwork
+    restart: unless-stopped
+
   proxy_nginx:
       build:
         context: ./nginx
